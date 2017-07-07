@@ -19,16 +19,8 @@ var postpathcontact='/api/data/v8.0/contacts';
 tokenendpoint = tokenendpoint.toLowerCase().replace('https://','');
 
 var authhost = tokenendpoint.split('/')[0];
-
 //get the authorization endpoint path
 var authpath = '/' + tokenendpoint.split('/').slice(1).join('/');
-
-//build the authorization request
-//if you want to learn more about how tokens work, see IETF RFC 6749 - https://tools.ietf.org/html/rfc6749
-
-
-
-
 
 module.exports ={
 
@@ -37,24 +29,14 @@ tokenGeneration: function(incidentData){
   console.log("Hello"+JSON.stringify(incidentData));
 },
 
-
-
-
-
-
 generateToken: function(contactData,incidentData){
-
-
-
   console.log('inside generate token');
-
   var reqstring = 'client_id='+clientid;
   reqstring+='&resource='+encodeURIComponent(crmorg);
   reqstring+='&username='+encodeURIComponent(username);
   reqstring+='&password='+encodeURIComponent(userpassword);
   reqstring+='&grant_type=password';
-
-console.log('REQUIRED STRING::'+reqstring);
+  console.log('REQUIRED STRING::'+reqstring);
   //set the token request parameters
 var tokenrequestoptions = {
     host: authhost,
@@ -65,12 +47,10 @@ var tokenrequestoptions = {
         'Content-Length': Buffer.byteLength(reqstring)
     }
 };
-
 console.log(tokenrequestoptions);
 console.log('going to make request');
 
 //make the token request
-
 var tokenrequest = https.request(tokenrequestoptions, function(response) {
     //make an array to hold the response parts if we get multiple parts
     console.log('hey inside token request');
@@ -83,18 +63,12 @@ var tokenrequest = https.request(tokenrequestoptions, function(response) {
     response.on('end', function(){
         //once we have all the response parts, concatenate the parts into a single string
         var completeresponse = responseparts.join('');
-        //console.log('Response: ' + completeresponse);
         console.log('Token response retrieved . . . '+JSON.stringify(completeresponse));
-
         //parse the response JSON
         var tokenresponse = JSON.parse(completeresponse);
-
         //extract the token
         var token = tokenresponse.access_token;
         console.log("tokenis:::::;"+token);
-        //pass the token to our data retrieval function
-     //getData(token);
-      //contactCreation(token,contactData);
 
           });
 });
@@ -107,14 +81,8 @@ tokenrequest.write(reqstring);
 
 //close the token request
 tokenrequest.end();
-
-
 }
 }
-
-
-
-
 
 function contactCreation(token,contactData){
 
@@ -151,11 +119,8 @@ var crmrequest = https.request(crmrequestoptions, function(response) {
     response.on('end', function(){
         //once we have all the response parts, concatenate the parts into a single string
         var completeresponse = responseparts.join('');
-
         console.log("-CONTACT RESPONSE::::::::::-"+completeresponse)
-
       //parse completeresponse and fetch the contact ID
-
           logIncident(token,contactID,incidentData);
     });
 });
@@ -163,19 +128,12 @@ crmrequest.on('error', function(e) {
     console.error(e);
 });
 
-
-
 console.log("PARAM:::::::::::::"+JSON.stringify(contactData));
 //close the web api request
 crmrequest.end(JSON.stringify(contactData));
-
-
 }
 
-
-
 function logIncident(token,contactID,incidentData){
-
   console.log("Hello"+incidentData);
   console.log("InsidePostincidentToken"+token);
   var requestheaders = {
@@ -205,62 +163,17 @@ function logIncident(token,contactID,incidentData){
           responseparts.push(chunk);
       });
       response.on('end', function(){
-          //once we have all the response parts, concatenate the parts into a single string
           var completeresponse = responseparts.join('');
-
           console.log("-------INCIDENT DATA RESPONSE------------"+completeresponse)
-
-
-
-
       });
   });
   crmrequest.on('error', function(e) {
       console.error(e);
   });
-
-  /*var incidentData=
-              {"title":"VFS complaint 2.0",
-               "description":"Case Description goes here",
-               caseorigincode:2483,
-               casetypecode:2,
-               prioritycode:2,
-               severitycode:1,
-               "customerid_contact@odata.bind":"/contacts(4f4108ef-cf5f-e711-8161-c4346bdd2141)"};*/
-
-
-
   console.log("PARAM"+JSON.stringify(incidentData));
   //close the web api request
   crmrequest.end(JSON.stringify(incidentData));
-
-
 }
 
 
 
-/*function fetchcrmData(contactData,incidentData){
-    generateToken(contactData,incidentData);
-}
-module.exports.fetchcrmData = fetchcrmData;*/
-
-
-/*function generateToken(contactData,incidentData){
-
-
-
-
-}
-//  module.exports.generateToken = generateToken;
-
-function contactCreation(token,contactData){
-
-
-
-}
-
-function logIncident(token,contactID,incidentData){
-
-
-
-}*/
