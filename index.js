@@ -17,7 +17,7 @@ exports.handler=function(event,context){
         if(event.hasOwnProperty('originalRequest')){
             if(event.originalRequest.source ==="facebook"){
                 console.log("Recieved Request from Facebook");
-                if(event.result.action ==="Confirmation-Intent"){
+                if(event.result.action ==="Personal-Info"){
                     facebookApp.ConfirmationIntend(event,context);
                 }
             }
