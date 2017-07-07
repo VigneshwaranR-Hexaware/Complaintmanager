@@ -7,6 +7,6 @@ var port = process.env.PORT || 3000;
 module.exports={
     ConfirmationIntend(event,context){
         console.log('triggering ConfirmationIntend');
-        console.log(event.result.contexts);
+        console.log("facebook Result" + event.result.contexts);
     }
 }

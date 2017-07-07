@@ -11,7 +11,7 @@ var deasync = require('deasync');
 const port = process.env.PORT || 3000;
 const facebookApp=require('./app.js');
 exports.handler=function(event,context){
-    console.log(event);
+    console.log("printing My Event" + event);
     if(event.hasOwnProperty('result')){
         console.log('Recieved Request from Api.Ai');
         if(event.hasOwnProperty('originalRequest')){
