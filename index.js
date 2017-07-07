@@ -9,7 +9,8 @@ const requestPromise = require('request-promise');
 var request=require('request');
 var deasync = require('deasync');
 const port = process.env.PORT || 3000;
-const facebookApp=require('./app.js');
+var facebookApp=require('./app.js');
+
 exports.handler=function(event,context){
     console.log("printing My Event" + event);
     if(event.hasOwnProperty('result')){
